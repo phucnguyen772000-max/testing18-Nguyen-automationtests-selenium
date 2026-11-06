@@ -7,8 +7,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class DashboardPage extends BasePage {
-    // <a class="oxd-main-menu-item" href="/web/index.php/admin/viewAdminModule">
     private static final By MENU_ADMIN = By.xpath("//a[@href='/web/index.php/admin/viewAdminModule']");
+    private static final By USER_DROPDOWN = By.xpath("//span[contains(@class,'oxd-userdropdown-tab')]");
+    private static final By LOGOUT_BTN = By.xpath("//a[@href='/web/index.php/auth/logout']");
 // //span[test()='Admin']
     //a=> tim tat ca cac the troing a trong page
     //a=> chinh the a dang xet
@@ -38,5 +39,12 @@ public class DashboardPage extends BasePage {
         }
         Thread.sleep(2000);
         return checklocators;
+    }
+    public void logout()
+    {
+        WebElement userDropdown =wait.until(ExpectedConditions.visibilityOfElementLocated(USER_DROPDOWN));
+        userDropdown.click();
+        WebElement logoutBtn=wait.until(ExpectedConditions.elementToBeClickable(LOGOUT_BTN));
+        logoutBtn.click();
     }
 }

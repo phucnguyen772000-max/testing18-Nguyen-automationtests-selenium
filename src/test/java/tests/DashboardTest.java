@@ -32,4 +32,11 @@ public class DashboardTest extends BaseTest {
         DashboardPage dashboardPage = new DashboardPage(driver,wait);
         Assert.assertTrue(dashboardPage.isElementPresnt());
     }
+    @Test(description = "Logout")
+    public void logout()
+    {
+        DashboardPage dashboardPage = new DashboardPage(driver,wait);
+        dashboardPage.logout();
+        Assert.assertTrue(driver.getCurrentUrl().contains(("login")));
+    }
 }

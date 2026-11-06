@@ -1,6 +1,7 @@
 package tests;
 
 import com.google.gson.Gson;
+import io.qameta.allure.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -10,7 +11,11 @@ import utils.ConfigReader;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
+// keyword trong agile/Scrum
+// epic-> 1 task bụ; Authentication, authorization,user management
+//1 epic sẽ có nhiều
+@Epic("Authentication")
+@Feature("login")
 public class LoginTest extends BaseTest {
     record LoginData(String username, String password, boolean success) {}
 
@@ -36,7 +41,9 @@ public class LoginTest extends BaseTest {
     }
 
     //b2: loaddata vao test case
-    @Test(dataProvider = "loginData")
+    @Story("login with data")
+    @Severity(SeverityLevel.NORMAL)
+    @Test(description = "Test login voi nhieu bo data", dataProvider = "loginData")
     public void testLoginData(LoginData data) throws InterruptedException
     {
         LoginPage loginPage = new LoginPage(driver, wait);
@@ -46,18 +53,19 @@ public class LoginTest extends BaseTest {
         Thread.sleep(2000);
         Assert.assertEquals(driver.getCurrentUrl().contains("dashboard"),data.success());
     }
-    @Test(description = "Test login success", dataProvider = "loginData")
-    public void testLoginSuccess(LoginData data) throws InterruptedException {
+
+    @Story("login success")
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(description = "Test login success")
+    public void testLoginSuccess() throws InterruptedException {
         LoginPage loginPage = new LoginPage(driver, wait);
         loginPage.open();
         loginPage.login(ConfigReader.get("username"),ConfigReader.get("password"));
 
-        if (data.success()) {
-            wait.until(ExpectedConditions.urlContains("dashboard"));
-        }
+        wait.until(ExpectedConditions.urlContains("dashboard"));
         String currentUrl = driver.getCurrentUrl();
         System.out.println(currentUrl);
 
-        Assert.assertEquals(currentUrl.contains("dashboard"), data.success());
+        Assert.assertTrue(currentUrl.contains("dashboard"));
     }
 }

@@ -1,4 +1,5 @@
 package pages;
+import io.qameta.allure.Allure;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -22,7 +23,11 @@ public class LoginPage extends BasePage
     // step 1 truy cap vao page login
      public  void open()
      {
-         driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+         Allure.step("open login page",()->{
+             driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+             wait.until(ExpectedConditions.visibilityOfElementLocated(INPUT_USERNAME));
+         });
+
 
      }
      //step 2: login
@@ -32,15 +37,23 @@ public class LoginPage extends BasePage
     // + uu diem de dang them log kiem tra, de sua,
     //c2: gom cac step thanh1 function
      public void login(String username, String password) throws InterruptedException {
-         WebElement usernameInput = wait.until(
-                 ExpectedConditions.visibilityOfElementLocated(INPUT_USERNAME));
-         usernameInput.sendKeys(username);
-            Thread.sleep(2000);
-         WebElement passwordInput = driver.findElement(INPUT_PASSWORD);
-         passwordInput.sendKeys(password);
+        Allure.step("Enter username:"+ username,()->{
+            WebElement usernameInput = driver.findElement(INPUT_USERNAME);
+            usernameInput.sendKeys(username);
+        });
 
          Thread.sleep(2000);
-         WebElement loginBtn= driver.findElement(LOGIN_BTN);
-         loginBtn.click();
+         Allure.step("Enter password",()->{
+             WebElement passwordInput = driver.findElement(INPUT_PASSWORD);
+             passwordInput.sendKeys(password);
+         });
+
+
+         Thread.sleep(2000);
+         Allure.step("click login button",()->{
+             WebElement loginBtn= driver.findElement(LOGIN_BTN);
+             loginBtn.click();
+         });
+
      }
 }
